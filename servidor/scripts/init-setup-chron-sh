@@ -1,0 +1,23 @@
+#!/bin/bash
+# setup-cron.sh — Configurar tareas programadas
+
+# ── Crontab del sistema ───────────────────────────────────────────
+cat > /etc/cron.d/proyecto-redes << 'EOF'
+SHELL=/bin/bash
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+
+# Respaldo diario a las 2:00 AM
+0 2 * * * root /opt/scripts/backup-diario.sh >> /var/log/proyecto/backup.log 2>&1
+
+# Monitoreo de cuotas cada hora
+0 * * * * root /opt/scripts/check-quota.sh >> /var/log/proyecto/quota.log 2>&1
+
+# Limpieza de logs viejos los domingos a las 3:00 AM
+0 3 * * 0 root find /var/log/proyecto -name "*.log" -mtime +30 -delete
+
+# Reporte de estado del sistema cada 6 horas
+0 */6 * * * root /opt/scripts/reporte-sistema.sh >> /var/log/proyecto/reporte.log 2>&1
+EOF
+
+echo "[CRON] Tareas programadas configuradas."
+crontab -l
