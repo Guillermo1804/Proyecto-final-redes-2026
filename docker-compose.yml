@@ -42,34 +42,3 @@ services:
     restart: unless-stopped
 
   # ── MONITOR (Prometheus + Grafana) ──────────────────────────────
-  monitor:
-    image: prom/prometheus:latest
-    container_name: monitor-redes
-    hostname: monitor
-    networks:
-      red-proyecto:
-        ipv4_address: 172.20.0.30
-    ports:
-      - "9090:9090"
-    volumes:
-      - ./monitor/prometheus.yml:/etc/prometheus/prometheus.yml
-    restart: unless-stopped
-
-  grafana:
-    image: grafana/grafana:latest
-    container_name: grafana-redes
-    networks:
-      red-proyecto:
-        ipv4_address: 172.20.0.40
-    ports:
-      - "3000:3000"
-    environment:
-      - GF_SECURITY_ADMIN_PASSWORD=admin123
-    volumes:
-      - vol-grafana:/var/lib/grafana
-    restart: unless-stopped
-
-volumes:
-  vol-datos:
-  vol-respaldos:
-  vol-grafana:
