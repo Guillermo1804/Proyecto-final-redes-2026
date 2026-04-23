@@ -39,18 +39,16 @@ services:
       - servidor
     restart: unless-stopped
 
-  monitor:
-    image: prom/prometheus:latest
-    container_name: monitor-redes
-    hostname: monitor
-    networks:
-      red-proyecto:
-        ipv4_address: 172.20.0.30
-    ports:
-      - "9090:9090"
-    volumes:
-      - ./monitor/prometheus.yml:/etc/prometheus/prometheus.yml
-    restart: unless-stopped
+monitor:
+  image: prom/prometheus:latest
+  container_name: monitor-redes
+  hostname: monitor
+  networks:
+    red-proyecto:
+      ipv4_address: 172.20.0.30
+  ports:
+    - "9090:9090"
+  restart: unless-stopped
 
   grafana:
     image: grafana/grafana:latest
